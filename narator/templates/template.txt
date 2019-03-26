@@ -1,0 +1,17 @@
+{% if topics %}
+{% for topic in topics %}
+#### {{ topic['title'] or loop.index}}
+  {% if topic['done'] -%}
+  - DONE:
+  {%- for item in topic['done'] %}
+    - {{ item }}
+  {%- endfor %}
+  {% endif -%}
+  {% if topic['todo'] -%}
+  - TODO:
+  {%- for item in topic['todo'] %}
+    - {{ item }}
+  {%- endfor -%}
+  {% endif %}
+{% endfor %}
+{% endif %}
