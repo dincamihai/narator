@@ -26,7 +26,7 @@ def get_template():
     return env.get_template('template.txt')
 
 
-def aggregate(comments):
+def aggregate(body):
     template = get_template()
     def topic_dict_factory():
         return {
@@ -35,19 +35,22 @@ def aggregate(comments):
             'todo': []
         }
     aggregation = []
-    for comment in comments:
-        lines = comment.splitlines()
-        topic = {
-            'title': lines[0],
-            'done': [],
-            'todo': []
-        }
-        for line in lines[1:]:
-            if not line:
-                continue
+    lines = body.splitlines()
+    for line in lines:
+        if not line:
+            continue
+        try:
             status, content = re.match('^(?P<status>todo|done) (?P<content>.*)$', line).groups()
+        except:
+            topic = {
+                'title': None,
+                'done': [],
+                'todo': []
+            }
+            topic['title'] = line.strip()
+            aggregation.append(topic)
+        else:
             topic[status].append(content)
-        aggregation.append(topic)
     rendered_aggregation = template.render(
         topics=aggregation,
     ).encode("utf-8").strip()
@@ -60,7 +63,7 @@ def main(auth, url):
     session = requests.Session()
     request = requests.Request(
         'GET',
-        'https://api.github.com/repos{0}/comments'.format(result.path),
+        'https://api.github.com/repos{0}'.format(result.path),
         headers={
             'User-Agent': 'narator-app'
         },
@@ -69,10 +72,21 @@ def main(auth, url):
     prepped = request.prepare()
     response = session.send(prepped)
     response.raise_for_status()
-    bodies = []
-    for comment in response.json():
-        bodies.append(comment['body'])
-    print(aggregate(bodies).decode('utf8'))
+    markdown = aggregate(response.json()['body']).decode('utf8')
+    print(markdown)
+    # update_request = requests.Request(
+    #     'PATCH',
+    #     'https://api.github.com/repos{0}'.format(result.path),
+    #     headers={
+    #         'User-Agent': 'narator-app'
+    #     },
+    #     data={
+    #         "body": markdown
+    #     },
+    #     auth=auth
+    # )
+    # update_response = session.send(update_request.prepare())
+    # update_response.raise_for_status()
 
 
 if __name__ == '__main__':
