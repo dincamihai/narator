@@ -10,7 +10,7 @@
 
 #### Example
 
-Comment:
+Issue description:
 
 ```
 Title 1
