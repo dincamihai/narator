@@ -74,19 +74,27 @@ def main(auth, url):
     response.raise_for_status()
     markdown = aggregate(response.json()['body']).decode('utf8')
     print(markdown)
-    # update_request = requests.Request(
-    #     'PATCH',
-    #     'https://api.github.com/repos{0}'.format(result.path),
-    #     headers={
-    #         'User-Agent': 'narator-app'
-    #     },
-    #     data={
-    #         "body": markdown
-    #     },
-    #     auth=auth
-    # )
-    # update_response = session.send(update_request.prepare())
-    # update_response.raise_for_status()
+    url = 'https://api.github.com/repos{0}/comments'.format(result.path),
+    method = 'post'
+    if response.json()['comments']:
+        comments = requests.get(
+            'https://api.github.com/repos{0}/comments'.format(result.path),
+            auth=auth
+        )
+        comments.raise_for_status()
+        url = comments.json()[0]['url']
+        method = 'patch'
+    post_markdown_response = getattr(requests, method)(
+        url,
+        headers={
+            'User-Agent': 'narator-app'
+        },
+        json={
+            "body": markdown
+        },
+        auth=auth
+    )
+    post_markdown_response.raise_for_status()
 
 
 if __name__ == '__main__':
