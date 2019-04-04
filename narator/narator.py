@@ -2,7 +2,7 @@ import re
 import requests
 from requests.auth import HTTPBasicAuth
 import argparse
-import config
+import os
 from urllib.parse import urlparse
 from jinja2 import Environment, PackageLoader, select_autoescape
 
@@ -52,7 +52,7 @@ def main(url):
     session = requests.Session()
     headers={
         'User-Agent': 'narator-app',
-        'Authorization': 'token {0}'.format(config.github['token'])
+        'Authorization': 'token {0}'.format(os.environ['GITHUB_TOKEN'])
     }
     request = requests.Request(
         'GET',

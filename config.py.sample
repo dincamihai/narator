@@ -1,4 +1,0 @@
-github = {
-    'user': 'galaxy-dashboard',
-    'token': '<token-here>'
-}
