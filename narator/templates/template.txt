@@ -1,16 +1,16 @@
 {% if topics %}
 {% for topic in topics %}
-#### {{ topic['title'] or loop.index}}
+#### {{ topic['title'] | safe or loop.index | safe}}
   {% if topic['done'] -%}
   - DONE:
   {%- for item in topic['done'] %}
-    - {{ item }}
+    - {{ item | safe}}
   {%- endfor %}
   {% endif -%}
   {% if topic['todo'] -%}
   - TODO:
   {%- for item in topic['todo'] %}
-    - {{ item }}
+    - {{ item | safe }}
   {%- endfor -%}
   {% endif %}
 {% endfor %}
