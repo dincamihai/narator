@@ -15,3 +15,5 @@
   {% endif %}
 {% endfor %}
 {% endif %}
+
+Generated with: [dincamihai/narator](https://github.com/dincamihai/narator)

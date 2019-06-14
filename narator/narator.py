@@ -16,6 +16,14 @@ def get_template():
     return env.get_template('template.txt')
 
 
+def new_topic():
+    return {
+        'title': '',
+        'done': [],
+        'todo': []
+    }
+
+
 def aggregate(body):
     template = get_template()
     def topic_dict_factory():
@@ -29,18 +37,15 @@ def aggregate(body):
     for line in lines:
         if not line:
             continue
-        try:
-            status, content = re.match('^(?P<status>todo|done) (?P<content>.*)$', line).groups()
-        except:
-            topic = {
-                'title': None,
-                'done': [],
-                'todo': []
-            }
-            topic['title'] = line.strip()
-            aggregation.append(topic)
+        match = re.match('^(?P<status>todo|done) (?P<content>.*)$', line)
+        if not match:
+            aggregation.append(new_topic())
+            aggregation[-1]['title'] = line.strip()
         else:
-            topic[status].append(content)
+            status, content = match.groups()
+            if not aggregation:
+                aggregation.append(new_topic())
+            aggregation[-1][status].append(content)
     rendered_aggregation = template.render(
         topics=aggregation,
     ).encode("utf-8").strip()
