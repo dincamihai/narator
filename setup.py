@@ -4,6 +4,7 @@ from setuptools import setup
 setup(
     name='narator',
     packages=['narator'],
+    scripts=['narator/narator'],
     version='0.1',
     description='',
     url='',
@@ -11,11 +12,12 @@ setup(
     author_email='dincamihai@gmail.com',
     license='MIT',
     include_package_data=True,
-    package_data = {
+    package_data={
         'narator': ['templates/*']
-    }
+    },
     install_requires=[
-        "jinja2"
+        "jinja2",
+        "requests"
     ],
     tests_requires=[
         'pytest',

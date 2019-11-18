@@ -1,19 +1,15 @@
-import re
-import requests
-from requests.auth import HTTPBasicAuth
-import argparse
+#! /usr/bin/env python3
+
 import os
+import re
+import argparse
+import requests
+
 from urllib.parse import urlparse
-from jinja2 import Environment, PackageLoader, select_autoescape
+from requests.auth import HTTPBasicAuth
 
+from narator import get_template
 
-def get_template():
-    env = Environment(
-        loader=PackageLoader('narator', 'templates'),
-        autoescape=select_autoescape(['txt'])
-    )
-
-    return env.get_template('template.txt')
 
 
 def new_topic():
