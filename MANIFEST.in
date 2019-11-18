@@ -1,0 +1,3 @@
+include *.txt *.md
+include narator/templates/*
+prune examples/sample?/build
