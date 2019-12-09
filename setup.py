@@ -7,7 +7,9 @@ with open('README.md', encoding='utf-8') as f:
 setup(
     name='narator',
     packages=['narator'],
-    scripts=['scripts/narator'],
+    entry_points = {
+        'console_scripts': ['narator=narator.narator:main'],
+    },
     version='0.1',
     description='Generate markdown work-reports from the body of github issues.',
     long_description=long_description,

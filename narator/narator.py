@@ -48,7 +48,11 @@ def aggregate(body):
     return rendered_aggregation
 
 
-def main(url):
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('url', type=str)
+    args = parser.parse_args()
+    url = args.url
     result = urlparse(url)
     session = requests.Session()
     headers={
@@ -83,7 +87,4 @@ def main(url):
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument('url', type=str)
-    args = parser.parse_args()
-    main(args.url)
+    main()
