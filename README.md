@@ -2,12 +2,8 @@
 
   - virtualenv --python=python3 sandbox
   - . sandbox/bin/activate
-  - pip install -r requirements.txt
-  - GITHUB_TOKEN=\<auth-token-here> python narator.py \<url-to-work-report-issue>
-
-You can alternatively install `narator` in your environment by running:
-
-  - python setup.py install
+  - pip install -e .
+  - GITHUB_TOKEN=\<auth-token-here> narator \<url-to-work-report-issue>
 
 #### Example
 
